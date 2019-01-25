@@ -12,6 +12,9 @@ account running it will quickly encounter PDT rules. Please make sure your
 account balance is well above $25,000 before running this script in a live
 environment.
 
+This script also presents a basic framework for streaming-based algorithms.
+You can learn how to write your algorithm based on the real-time price updates.
+
 ## Setup
 
 This algorithm runs with Python 3.6 or above. It uses
