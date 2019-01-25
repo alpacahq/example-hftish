@@ -1,10 +1,17 @@
 """
 The aim of this algorithm is to capture slight moves in the bid/ask spread
 as they happen. It is only intended to work for high-volume stocks where there
-are frequent moves of 1 cent exactly. This algorithm will make many trades on
-the same security each day, so any account running it will quickly encounter
-PDT rules. Please make sure your account balance is well above $25,000 before
-running this script in a live environment.
+are frequent moves of 1 cent exactly.  It is one of the algorithms that
+uses order book imbalance. For more details about it, please refer to
+
+http://eprints.maths.ox.ac.uk/1895/1/Darryl%20Shen%20%28for%20archive%29.pdf
+
+or other online articles.
+
+This algorithm will make many trades on the same security each day, so any
+account running it will quickly encounter PDT rules. Please make sure your
+account balance is well above $25,000 before running this script in a live
+environment.
 """
 
 import argparse
