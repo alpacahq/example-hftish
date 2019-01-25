@@ -4,10 +4,6 @@ import numpy as np
 import alpaca_trade_api as tradeapi
 
 
-# The maximum number of shares we'll hold at once for the symbol
-max_shares = 500
-
-
 class Quote():
     """
     We use Quote objects to represent the bid/ask spread. When we encounter a
@@ -114,6 +110,7 @@ class Position():
 
 def run(args):
     symbol = args.symbol
+    max_shares = args.quantity
     opts = {}
     if args.key_id:
         opts['key_id'] = args.key_id
@@ -241,7 +238,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--symbol', type=str, default='SNAP',
-        help='symbol you want to trade'
+        help='Symbol you want to trade.'
+    )
+    parser.add_argument(
+        '--quantity', type=int, default=500,
+        help='Maximum number of shares to hold at once. Minimum 100.'
     )
     parser.add_argument(
         '--key-id', type=str, default=None,
@@ -256,4 +257,5 @@ if __name__ == '__main__':
         help='set https://paper-api.alpaca.markets if paper trading',
     )
     args = parser.parse_args()
+    assert args.quantity >= 100
     run(args)
