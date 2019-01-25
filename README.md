@@ -2,11 +2,9 @@
 
 The aim of this algorithm is to capture slight moves in the bid/ask spread
 as they happen. It is only intended to work for high-volume stocks where there
-are frequent moves of 1 cent exactly.  It is one of the algorithms that
-uses order book imbalance. For more details about it, please refer to
-
-http://eprints.maths.ox.ac.uk/1895/1/Darryl%20Shen%20%28for%20archive%29.pdf
-
+are frequent moves of 1 cent exactly.  It is one of the trading strategies
+based on order book imbalance. For more details about it, please refer to
+[Darryl Shen, 2015](http://eprints.maths.ox.ac.uk/1895/1/Darryl%20Shen%20%28for%20archive%29.pdf)
 or other online articles.
 
 This algorithm will make many trades on the same security each day, so any
@@ -18,7 +16,8 @@ environment.
 
 This algorithm runs with Python 3.6 or above. It uses
 [Alpaca Python SDK](https://pypi.org/project/alpaca-trade-api/) so make
-sure install it beforehand, or if you have `pipenv`, you can install it by
+sure install it beforehand, or if you have [pipenv](https://pipenv.readthedocs.io),
+you can install it by
 
 ```sh
 $ pipenv install
@@ -51,4 +50,4 @@ The parameters are following.
 Please also note that this algorithm uses the Polygon streaming API with Alpaca API key,
 so you have to have a live trading account setup. For more details about the data
 requirements, please see
-[Alpaca document](https://docs.alpaca.markets/web-api/market-data/)
+[Alpaca document](https://docs.alpaca.markets/web-api/market-data/).
