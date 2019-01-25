@@ -1,0 +1,9 @@
+__pycache__
+.envrc
+.zipline
+.pyversion
+.vscode
+.coverage
+.python-version
+.pytest_cache
+algo-state.pkl
