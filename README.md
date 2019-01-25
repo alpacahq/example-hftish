@@ -47,7 +47,7 @@ $ python ./tick_taker.py
 The parameters are following.
 
 - `--symbol`: the stock to trade (defaults to "SNAP")
-- `--quantity`: the maximum number of shares to buy at once. Note that this does not account for any existing position; the algorithm only tracks what is bought as part of its execution. (Default 500, minimum 100.)
+- `--quantity`: the maximum number of shares to hold at once. Note that this does not account for any existing position; the algorithm only tracks what is bought as part of its execution. (Default 500, minimum 100.)
 - `--key-id`: your API key ID. (Can also be set via the APCA_API_KEY_ID environment variable.)
 - `--secret-key`: your API key secret. (Can also be set via the APCA_API_SECRET_KEY environment variable.)
 - `--base-url`: the URL to connect to. (Can also be set via the APCA_API_BASE_URL environment variable. Defaults to "https://paper-api.alpaca.markets" if using a paper account key, "https://api.alpaca.markets" otherwise.)
