@@ -47,10 +47,15 @@ $ python ./tick_taker.py
 The parameters are following.
 
 - `--symbol`: the stock to trade (defaults to "SNAP")
+- `--key-id`: your API key ID. (Can also be set via the APCA_API_KEY_ID environment variable.)
+- `--secret-key`: your API key secret. (Can also be set via the APCA_API_SECRET_KEY environment variable.)
+- `--base-url`: the URL to connect to. (Can also be set via the APCA_API_BASE_URL environment variable. Defaults to "https://paper-api.alpaca.markets" if using a paper account key, "https://api.alpaca.markets" otherwise.)
+
+The algorithm can be stopped at any time by sending a keyboard interrupt `CTRL+Z` to the console.
 
 ## Note
 
 Please also note that this algorithm uses the Polygon streaming API with Alpaca API key,
 so you have to have a live trading account setup. For more details about the data
 requirements, please see
-[Alpaca document](https://docs.alpaca.markets/web-api/market-data/).
+[Alpaca documentation](https://docs.alpaca.markets/web-api/market-data/).
