@@ -52,7 +52,7 @@ The parameters are following.
 - `--secret-key`: your API key secret. (Can also be set via the APCA_API_SECRET_KEY environment variable.)
 - `--base-url`: the URL to connect to. (Can also be set via the APCA_API_BASE_URL environment variable. Defaults to "https://paper-api.alpaca.markets" if using a paper account key, "https://api.alpaca.markets" otherwise.)
 
-The algorithm can be stopped at any time by sending a keyboard interrupt `CTRL+Z` to the console.
+The algorithm can be stopped at any time by sending a keyboard interrupt `CTRL+C` to the console. (You may need to send two `CTRL+C` commands to kill the process depending where in the execution you catch it.)
 
 ## Note
 
