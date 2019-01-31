@@ -145,7 +145,7 @@ def run(args):
         # We've received a trade and might be ready to follow it
         if (
             data.timestamp <= (
-                quote.time + pd.Timedelta(np.timedelta64(50, 'ms'))
+                quote.time + pd.Timedelta(np.timedelta64(5, 'ms'))
             )
         ):
             # The trade came too close to the quote update
