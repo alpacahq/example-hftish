@@ -28,6 +28,7 @@ class Quote():
         self.traded = True
         self.level_ct = 1
         self.time = 0
+        self.symbol = ''
 
     def reset(self):
         # Called when a level change happens
@@ -38,6 +39,7 @@ class Quote():
         # Update bid and ask sizes and timestamp
         self.bid_size = data.bidsize
         self.ask_size = data.asksize
+        self.symbol = data.symbol
 
         # Check if there has been a level change
         if (
@@ -54,9 +56,9 @@ class Quote():
             # Update spreads
             self.prev_spread = round(self.prev_ask - self.prev_bid, 3)
             self.spread = round(self.ask - self.bid, 3)
-            print(
-                'Level change:', self.prev_bid, self.prev_ask,
-                self.prev_spread, self.bid, self.ask, self.spread, flush=True
+            print('Symbol: {} Level change: {} {} {} {} {} {}'.format(self.symbol, 
+                self.prev_bid, self.prev_ask, self.prev_spread, self.bid, self.ask, 
+                self.spread), flush=True
             )
             # If change is from one penny spread level to a different penny
             # spread level, then initialize for new level (reset stale vars)
