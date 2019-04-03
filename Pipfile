@@ -9,6 +9,7 @@ alpaca-trade-api = ">=0.24"
 [dev-packages]
 pytest = "*"
 pytest-cov = "*"
+pbr = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"

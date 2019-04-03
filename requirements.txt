@@ -1,0 +1,15 @@
+-i https://pypi.org/simple
+alpaca-trade-api==0.26
+asyncio-nats-client==0.8.2
+certifi==2019.3.9
+chardet==3.0.4
+idna==2.8
+numpy==1.16.2
+pandas==0.24.2
+python-dateutil==2.8.0
+pytz==2018.9
+requests==2.21.0
+six==1.12.0
+urllib3==1.24.1
+websocket-client==0.56.0
+websockets==7.0
