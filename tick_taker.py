@@ -2,7 +2,7 @@ import argparse
 import pandas as pd
 import numpy as np
 import alpaca_trade_api as tradeapi
-
+from collections import defaultdict
 
 class Quote():
     """
@@ -17,53 +17,77 @@ class Quote():
     """
 
     def __init__(self):
-        self.prev_bid = 0
-        self.prev_ask = 0
-        self.prev_spread = 0
-        self.bid = 0
-        self.ask = 0
-        self.bid_size = 0
-        self.ask_size = 0
-        self.spread = 0
-        self.traded = True
-        self.level_ct = 1
-        self.time = 0
-        self.symbol = ''
+        self.symbol_dict = defaultdict(dict)
+        self.default_dict = {
+            'prev_bid': 0,
+            'prev_ask': 0,
+            'prev_spread': 0,
+            'bid': 0,
+            'ask': 0,
+            'bid_size': 0,
+            'ask_size': 0,
+            'spread': 0,
+            'traded': True,
+            'level_ct': 1,
+            'time': 0
+        }
 
-    def reset(self):
+    def get_symbol_dict(self, symbol):
+        # Checks symbol dictionary exists. If not, starts a default one.
+        if symbol in self.symbol_dict.keys():
+            return_dict = self.symbol_dict[symbol]
+        else:
+            return_dict = self.default_dict
+            self.symbol_dict[symbol] = return_dict
+
+        return return_dict
+
+    def update_symbol_dict(self, symbol, update_dict):
+        # Updates symbol dictionary
+        self.symbol_dict[symbol].update(update_dict)
+
+    def reset_dict(self, symbol_dict):
         # Called when a level change happens
-        self.traded = False
-        self.level_ct += 1
+        symbol_dict['traded'] = False
+        symbol_dict['level_ct'] += 1
+        return symbol_dict
 
     def update(self, data):
+        # Get the symbol and retrieve its dictionary
+        symbol = data.symbol
+        symbol_dict = self.get_symbol_dict(symbol)
+
         # Update bid and ask sizes and timestamp
-        self.bid_size = data.bidsize
-        self.ask_size = data.asksize
-        self.symbol = data.symbol
+        symbol_dict['bid_size'] = data.bidsize
+        symbol_dict['ask_size'] = data.asksize
 
         # Check if there has been a level change
         if (
-            self.bid != data.bidprice
-            and self.ask != data.askprice
+            symbol_dict['bid'] != data.bidprice
+            and symbol_dict['ask'] != data.askprice
             and round(data.askprice - data.bidprice, 2) == .01
         ):
             # Update bids and asks and time of level change
-            self.prev_bid = self.bid
-            self.prev_ask = self.ask
-            self.bid = data.bidprice
-            self.ask = data.askprice
-            self.time = data.timestamp
+            symbol_dict['prev_bid'] = symbol_dict['bid']
+            symbol_dict['prev_ask'] = symbol_dict['ask']
+            symbol_dict['bid'] = data.bidprice
+            symbol_dict['ask'] = data.askprice
+            symbol_dict['time'] = data.timestamp
+            
             # Update spreads
-            self.prev_spread = round(self.prev_ask - self.prev_bid, 3)
-            self.spread = round(self.ask - self.bid, 3)
-            print('Symbol: {} Level change: {} {} {} {} {} {}'.format(self.symbol, 
-                self.prev_bid, self.prev_ask, self.prev_spread, self.bid, self.ask, 
-                self.spread), flush=True
+            symbol_dict['prev_spread'] = round(symbol_dict['prev_ask'] - symbol_dict['prev_bid'], 3)
+            symbol_dict['spread'] = round(symbol_dict['ask'] - symbol_dict['bid'], 3)
+            print('Symbol: {} Level change: {} {} {} {} {} {}'.format(symbol, 
+                symbol_dict['prev_bid'], symbol_dict['prev_ask'], symbol_dict['prev_spread'], 
+                symbol_dict['bid'], symbol_dict['ask'], symbol_dict['spread']), flush=True
             )
             # If change is from one penny spread level to a different penny
             # spread level, then initialize for new level (reset stale vars)
-            if self.prev_spread == 0.01:
-                self.reset()
+            if symbol_dict['prev_spread'] == 0.01:
+                symbol_dict = self.reset(symbol_dict)
+
+        # Update the status of the current dict
+        self.update_symbol_dict(symbol, symbol_dict)
 
 
 class Position():
