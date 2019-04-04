@@ -173,11 +173,15 @@ def run(args):
     # Define our message handling
     @conn.on(qc_str_for_streaming)
     async def on_quote(conn, channel, data):
+        # for debugging
+        print("Connected to {} quote channel".format(data.symbol))
         # Quote update received
         quote.update(data)
 
     @conn.on(tc_str_for_streaming)
     async def on_trade(conn, channel, data):
+        # for debugging
+        print("Connected to {} trade channel".format(data.symbol))
         if quote.traded:
             return
         # We've received a trade and might be ready to follow it
