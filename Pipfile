@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 alpaca-trade-api = ">=0.24"
+ipython = "*"
 
 [dev-packages]
 pytest = "*"
