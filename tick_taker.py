@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../alpaca-trade-api-python')
 import argparse
 import pandas as pd
 import numpy as np
@@ -97,12 +99,13 @@ class Position():
             self.orders_filled_amount[order_id] = new_amount
 
     def remove_pending_order(self, order_id, side):
-        old_amount = self.orders_filled_amount[order_id]
-        if side == 'buy':
-            self.update_pending_buy_shares(old_amount - 100)
-        else:
-            self.update_pending_sell_shares(old_amount - 100)
-        del self.orders_filled_amount[order_id]
+        old_amount = self.orders_filled_amount.get(order_id)
+        if old_amount:
+            if side == 'buy':
+                self.update_pending_buy_shares(old_amount - 100)
+            else:
+                self.update_pending_sell_shares(old_amount - 100)
+            del self.orders_filled_amount[order_id]
 
     def update_total_shares(self, quantity):
         self.total_shares += quantity
