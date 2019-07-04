@@ -97,7 +97,7 @@ class Position():
                     self.update_total_shares(old_amount - new_amount)
                 self.orders_filled_amount[order_id] = new_amount
         else:
-            logger.console(
+            print(
                 f'Order ID: {order_id} not present on current orders.')
 
     def remove_pending_order(self, order_id, side):
@@ -109,7 +109,7 @@ class Position():
                 self.update_pending_sell_shares(old_amount - 100)
             del self.orders_filled_amount[order_id]
         else:
-            logger.console(
+            print(
                 f'Order ID: {order_id} not present on current orders.')
 
     def update_total_shares(self, quantity):
