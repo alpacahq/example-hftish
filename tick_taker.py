@@ -133,12 +133,12 @@ def run(args):
     conn = tradeapi.StreamConn(**opts)
 
     # Define our message handling
-    @conn.on(r'Q\.' + symbol)
+    @conn.on(r'Q$')
     async def on_quote(conn, channel, data):
         # Quote update received
         quote.update(data)
 
-    @conn.on(r'T\.' + symbol)
+    @conn.on(r'T$')
     async def on_trade(conn, channel, data):
         if quote.traded:
             return
