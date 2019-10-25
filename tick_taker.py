@@ -86,23 +86,31 @@ class Position():
         self.pending_sell_shares += quantity
 
     def update_filled_amount(self, order_id, new_amount, side):
-        old_amount = self.orders_filled_amount[order_id]
-        if new_amount > old_amount:
-            if side == 'buy':
-                self.update_pending_buy_shares(old_amount - new_amount)
-                self.update_total_shares(new_amount - old_amount)
-            else:
-                self.update_pending_sell_shares(old_amount - new_amount)
-                self.update_total_shares(old_amount - new_amount)
-            self.orders_filled_amount[order_id] = new_amount
+        old_amount = self.orders_filled_amount.get(order_id)
+        if old_amount:
+            if new_amount > old_amount:
+                if side == 'buy':
+                    self.update_pending_buy_shares(old_amount - new_amount)
+                    self.update_total_shares(new_amount - old_amount)
+                else:
+                    self.update_pending_sell_shares(old_amount - new_amount)
+                    self.update_total_shares(old_amount - new_amount)
+                self.orders_filled_amount[order_id] = new_amount
+        else:
+            print(
+                f'Order ID: {order_id} not present on current orders.')
 
     def remove_pending_order(self, order_id, side):
-        old_amount = self.orders_filled_amount[order_id]
-        if side == 'buy':
-            self.update_pending_buy_shares(old_amount - 100)
+        old_amount = self.orders_filled_amount.get(order_id)
+        if old_amount:
+            if side == 'buy':
+                self.update_pending_buy_shares(old_amount - 100)
+            else:
+                self.update_pending_sell_shares(old_amount - 100)
+            del self.orders_filled_amount[order_id]
         else:
-            self.update_pending_sell_shares(old_amount - 100)
-        del self.orders_filled_amount[order_id]
+            print(
+                f'Order ID: {order_id} not present on current orders.')
 
     def update_total_shares(self, quantity):
         self.total_shares += quantity
