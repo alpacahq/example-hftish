@@ -1,4 +1,7 @@
 # Example HFT-ish Algorithm for Alpaca Trading API
+# Esto es una preuba del algoritmo
+
+
 
 The aim of this algorithm is to capture slight moves in the bid/ask spread
 as they happen. It is only intended to work for high-volume stocks where there
