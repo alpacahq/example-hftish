@@ -36,20 +36,20 @@ class Quote():
 
     def update(self, data):
         # Update bid and ask sizes and timestamp
-        self.bid_size = data.bidsize
-        self.ask_size = data.asksize
+        self.bid_size = data.bid_size
+        self.ask_size = data.ask_size
 
         # Check if there has been a level change
         if (
-            self.bid != data.bidprice
-            and self.ask != data.askprice
-            and round(data.askprice - data.bidprice, 2) == .01
+            self.bid != data.bid_price
+            and self.ask != data.ask_price
+            and round(data.ask_price - data.bid_price, 2) == .01
         ):
             # Update bids and asks and time of level change
             self.prev_bid = self.bid
             self.prev_ask = self.ask
-            self.bid = data.bidprice
-            self.ask = data.askprice
+            self.bid = data.bid_price
+            self.ask = data.ask_price
             self.time = data.timestamp
             # Update spreads
             self.prev_spread = round(self.prev_ask - self.prev_bid, 3)
@@ -125,21 +125,19 @@ def run(args):
 
     symbol = symbol.upper()
     quote = Quote()
-    qc = 'Q.%s' % symbol
-    tc = 'T.%s' % symbol
     position = Position()
 
     # Establish streaming connection
-    conn = tradeapi.StreamConn(**opts)
+    conn = tradeapi.Stream(**opts)
 
     # Define our message handling
-    @conn.on(r'Q$')
-    async def on_quote(conn, channel, data):
+    @conn.on_quote(symbol)
+    async def on_quote(data):
         # Quote update received
         quote.update(data)
 
-    @conn.on(r'T$')
-    async def on_trade(conn, channel, data):
+    @conn.on_trade(symbol)
+    async def on_trade(data):
         if quote.traded:
             return
         # We've received a trade and might be ready to follow it
@@ -202,8 +200,7 @@ def run(args):
                 except Exception as e:
                     print(e)
 
-    @conn.on(r'trade_updates')
-    async def on_trade_updates(conn, channel, data):
+    async def on_trade_update(data):
         # We got an update on one of the orders we submitted. We need to
         # update our position with the new information.
         event = data.event
@@ -229,9 +226,8 @@ def run(args):
                 data.order['id'], data.order['side']
             )
 
-    conn.run(
-        ['trade_updates', tc, qc]
-    )
+    conn.subscribe_trade_updates(on_trade_update)
+    conn.run()
 
 
 if __name__ == '__main__':
